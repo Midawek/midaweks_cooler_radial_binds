@@ -3,14 +3,14 @@
 MCRB = MCRB or {}
 
 MCRB.Binds = {
-    "cmd", "bind", "toggle", "instant", "fallngcmd", "burst", "dualedge"
+    "Command", "Bind", "Toggle", "Instant", "Falling Edge", "Burst", "Dual Edge"
     --[[
-    cmd - when selected, pressing the bind key will activate this one.
-    bind - when selected, pressing the bind key will use it with + and -
-    toggle - when selected, pressing the bind key will toggle + and -
-    instant - when selected, this command will trigger instantly. It will then act like CMD.
-    falling_cmd - command triggers on falling edge
-    burst - command triggers for X seconds
-    dualedge - command triggers on rising and falling edge
+    Command - when selected, pressing the bind key will activate this one.
+    Bind - when selected, pressing the bind key will use it with + and -
+    Toggle - when selected, pressing the bind key will toggle + and -
+    Instant - when selected, this command will trigger instantly. It will then act like CMD.
+    Falling Edge - command triggers on falling edge
+    Burst - command triggers for X seconds
+    Dual Edge - command triggers on rising and falling edge
     ]]
 }
