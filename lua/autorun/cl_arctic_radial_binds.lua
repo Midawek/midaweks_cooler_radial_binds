@@ -1,12 +1,12 @@
 if SERVER then return end
 
-BIND_CMD = 0 -- when selected, pressing the bind key will activate this one.
-BIND_BIND = 1 -- when selected, pressing the bind key will use it with + and -
-BIND_TOGGLE = 2 -- when selected, pressing the bind key will toggle + and -
-BIND_INSTANT = 3 -- when selected, this command will trigger instantly. It will then act like CMD.
+BIND_CMD = 0        -- when selected, pressing the bind key will activate this one.
+BIND_BIND = 1       -- when selected, pressing the bind key will use it with + and -
+BIND_TOGGLE = 2     -- when selected, pressing the bind key will toggle + and -
+BIND_INSTANT = 3    -- when selected, this command will trigger instantly. It will then act like CMD.
 BIND_FALLINGCMD = 4 -- command triggers on falling edge
-BIND_BURST = 5 -- command triggers for X seconds
-BIND_DUALEDGE = 6 -- command triggers on rising and falling edge
+BIND_BURST = 5      -- command triggers for X seconds
+BIND_DUALEDGE = 6   -- command triggers on rising and falling edge
 
 ArcticRadialBinds_BIND_To_Text = {
     [BIND_CMD] = "Command",
@@ -57,22 +57,22 @@ ArcticRadialBinds_MouseRad = 0
 
 local fontf = "Bahnschrift"
 
-surface.CreateFont( "arc_radial_binds_16", {
+surface.CreateFont("arc_radial_binds_16", {
     font = fontf,
     size = ScreenScale(16),
     weight = 0,
     antialias = true,
     extended = true, -- Required for non-latin fonts
-} )
+})
 
-surface.CreateFont( "arc_radial_binds_16_shadow", {
+surface.CreateFont("arc_radial_binds_16_shadow", {
     font = fontf,
     size = ScreenScale(16),
     blursize = 5,
     weight = 0,
     antialias = true,
     extended = true, -- Required for non-latin fonts
-} )
+})
 
 local function RadiusSpoke(x, y, angle, rad)
     x = x + (math.cos(angle) * rad)
@@ -88,7 +88,7 @@ local fadetime = 0.1
 hook.Add("HUDPaint", "ArcticRadialBinds_HUD", function()
     local activemenu = ArcticRadialBinds[ArcticRadialBinds_SelectedMenu]
 
-    if !activemenu then return end
+    if ! activemenu then return end
 
     if ArcticRadialBinds_Open then
         ArcticRadialBinds_Fade = math.Approach(ArcticRadialBinds_Fade, 1, FrameTime() / fadetime)
@@ -128,7 +128,7 @@ hook.Add("HUDPaint", "ArcticRadialBinds_HUD", function()
                 selected = false
             end
 
-            if !activemenu[i] then continue end
+            if ! activemenu[i] then continue end
 
             activemenu[i].SegmentFade = activemenu[i].SegmentFade or 0
 
@@ -182,7 +182,7 @@ local function instant()
     local activemenu = ArcticRadialBinds[ArcticRadialBinds_SelectedMenu]
     local selection = activemenu[ArcticRadialBinds_Selection]
 
-    if !selection then return end
+    if ! selection then return end
 
     local ply = LocalPlayer()
 
@@ -222,12 +222,12 @@ concommand.Add("-arc_radial_menu_3", function()
 end)
 
 hook.Add("InputMouseApply", "ArcticRadialBinds_Mouse", function(cmd, x, y, ang)
-    if !ArcticRadialBinds_Open then return end
+    if ! ArcticRadialBinds_Open then return end
 
     if math.abs(x) + math.abs(y) <= 0 then return end
 
-    cmd:SetMouseX( 0 )
-    cmd:SetMouseY( 0 )
+    cmd:SetMouseX(0)
+    cmd:SetMouseY(0)
 
     local mousex = math.cos(math.rad(ArcticRadialBinds_MouseAng)) * ArcticRadialBinds_MouseRad
     local mousey = math.sin(math.rad(ArcticRadialBinds_MouseAng)) * ArcticRadialBinds_MouseRad
@@ -253,7 +253,7 @@ concommand.Add("+arc_radial_bind", function()
     local activemenu = ArcticRadialBinds[ArcticRadialBinds_SelectedMenu]
     local selection = activemenu[ArcticRadialBinds_Selection]
 
-    if !selection then return end
+    if ! selection then return end
 
     local ply = LocalPlayer()
 
@@ -268,7 +268,7 @@ concommand.Add("+arc_radial_bind", function()
             ply:ConCommand("+" .. selection.Command)
         end
 
-        selection.BindToggle = !selection.BindToggle
+        selection.BindToggle = ! selection.BindToggle
     elseif selection.BindType == BIND_BIND then
         ply:ConCommand("+" .. selection.Command)
     elseif selection.BindType == BIND_DUALEDGE then
@@ -286,7 +286,7 @@ concommand.Add("-arc_radial_bind", function()
     local activemenu = ArcticRadialBinds[ArcticRadialBinds_SelectedMenu]
     local selection = activemenu[ArcticRadialBinds_Selection]
 
-    if !selection then return end
+    if ! selection then return end
 
     local ply = LocalPlayer()
 
