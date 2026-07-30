@@ -1,5 +1,5 @@
 -- MIDAWEK'S COOLER RADIAL BINDS
-
+if SERVER then return end
 MCRB = MCRB or {}
 
 MCRB.Binds = {
