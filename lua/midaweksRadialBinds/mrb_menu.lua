@@ -1,13 +1,14 @@
 -- MCRB menu
 
 if not CLIENT then return end
-MCRB.menu = MCRB.menu or {}
 
-if MCRB.Menu.Loaded then return end
-MCRB.Menu.Loaded = true
+local function panel(panel)
+    panel:SetName("Midawek's Cooler Radial Binds")
+    local mrow = panel:Add("DButton")
+    mrow:SetText("Press this to open menu")
+end
 
-
-list.Set("DesktopWindows", "MCRB_Menu", {
-    title = "Midawek's Cooler Radial Binds",
-
-})
+hook.Add("PopulateToolMenu", "MCRB_PopulateToolMenu", function()
+    spawnmenu.AddToolMenuOption("Options", "Midawek", "Midawek's Cooler Radial Binds", "Cooler Radial Binds", "", "",
+        panel)
+end)
