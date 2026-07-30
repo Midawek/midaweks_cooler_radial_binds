@@ -5,12 +5,12 @@ local files = {
     "mrb_menu.lua",
 }
 
-if SERVER then
-    for _, x in pairs(files) do
-        AddCSLuaFile("midaweksRadialBinds/" .. x)
-        print("[MCRB] AddedCSLuaFile " .. x)
-    end
-end
+-- if SERVER then
+--     for _, x in pairs(files) do
+--         AddCSLuaFile("midaweksRadialBinds/" .. x)
+--         print("[MCRB] AddedCSLuaFile " .. x)
+--     end
+-- end
 
 if CLIENT then
     for _, x in pairs(files) do
