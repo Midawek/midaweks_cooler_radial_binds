@@ -270,6 +270,21 @@ function MCRB:OpenMenu()
             MCRB:Load()
             MCRB:RegenBindMenu()
         end
+
+        local legacybutton = vgui.Create("DButton", mcat)
+        legacybutton:SetText("Import Legacy Files")
+        legacybutton:Dock(TOP)
+        legacybutton:DockMargin(0, 0, 0, 2)
+        legacybutton.DoClick = function()
+            editmenu:Clear()
+            if MCRB:LoadLegacy() then
+                MCRB:Save()
+                MCRB:RegenBindMenu()
+                chat.AddText(Color(0, 255, 0), "[MCRB] Legacy files imported and converted to new format!")
+            else
+                chat.AddText(Color(255, 0, 0), "[MCRB] No legacy files found to import.")
+            end
+        end
     end
 
     MCRB:RegenBindMenu()
@@ -278,40 +293,92 @@ function MCRB:OpenMenu()
     MCRB.legacyFilename = "arcticradialbinds1.json"
     MCRB.legacyFilename2 = "arcticradialbinds2.json"
     MCRB.legacyFilename3 = "arcticradialbinds3.json"
+    MCRB.newFilename = "midaweksradialbinds1.json"
+    MCRB.newFilename2 = "midaweksradialbinds2.json"
+    MCRB.newFilename3 = "midaweksradialbinds3.json"
+
     function MCRB:Save()
         local serial = util.TableToJSON(MCRB.Radials[1])
         local serial2 = util.TableToJSON(MCRB.Radials[2])
         local serial3 = util.TableToJSON(MCRB.Radials[3])
         MCRB.log(self, serial)
-        file.Write(MCRB.legacyFilename, serial)
-        file.Write(MCRB.legacyFilename2, serial2)
-        file.Write(MCRB.legacyFilename3, serial3)
+        file.Write(MCRB.newFilename, serial)
+        file.Write(MCRB.newFilename2, serial2)
+        file.Write(MCRB.newFilename3, serial3)
+    end
+
+    function MCRB:ConvertLegacyBindType(bindType)
+        if type(bindType) == "number" then
+            local bindTypeMap = {
+                [0] = "Command",
+                [1] = "Bind",
+                [2] = "Toggle",
+                [3] = "Instant",
+                [4] = "Falling Edge",
+                [5] = "Burst",
+                [6] = "Dual Edge"
+            }
+            return bindTypeMap[bindType] or "Command"
+        end
+        return bindType
+    end
+
+    function MCRB:LoadLegacy()
+        local loaded = false
+        for i, k in pairs({ MCRB.legacyFilename, MCRB.legacyFilename2, MCRB.legacyFilename3 }) do
+            if file.Exists(k, "DATA") then
+                local serial = file.Read(k, "DATA")
+                local data = util.JSONToTable(serial)
+
+                local newtbl = {}
+                for _, v in pairs(data) do
+                    v.BindType = MCRB:ConvertLegacyBindType(v.BindType)
+                    table.insert(newtbl, v)
+                end
+
+                MCRB.Radials[i] = newtbl
+                loaded = true
+            end
+        end
+
+        if not loaded then
+            if file.Exists(MCRB.legacyFilenameOld, "DATA") then
+                local serial = file.Read(MCRB.legacyFilenameOld, "DATA")
+                local data = util.JSONToTable(serial)
+
+                for i = 1, 3 do
+                    if data[i] then
+                        local newtbl = {}
+                        for _, v in pairs(data[i]) do
+                            v.BindType = MCRB:ConvertLegacyBindType(v.BindType)
+                            table.insert(newtbl, v)
+                        end
+                        MCRB.Radials[i] = newtbl
+                    end
+                end
+                loaded = true
+            end
+        end
+
+        return loaded
     end
 
     function MCRB:Load()
-        local new = false
-        for i, k in pairs({ MCRB.legacyFilename, MCRB.legacyFilename2, MCRB.legacyFilename3 }) do
+        for i, k in pairs({ MCRB.newFilename, MCRB.newFilename2, MCRB.newFilename3 }) do
             if file.Exists(k, "DATA") then
-                local serial = file.Read(k)
+                local serial = file.Read(k, "DATA")
                 MCRB.Radials[i] = util.JSONToTable(serial)
 
                 local newtbl = {}
-
                 for _, v in pairs(MCRB.Radials[i]) do
                     table.insert(newtbl, v)
                 end
 
                 MCRB.Radials[i] = newtbl
-
-                new = true
-            end
-        end
-
-        if ! new then
-            if file.Exists(MCRB.legacyFilenameOld, "DATA") then
-                local serial = file.Read(MCRB.legacyFilenameOld)
-                MCRB.Radials = util.JSONToTable(serial)
             end
         end
     end
 end
+
+-- Auto-load on startup
+MCRB:Load()
