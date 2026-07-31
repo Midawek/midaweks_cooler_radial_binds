@@ -54,22 +54,30 @@ MCRB.Colour = CreateConVar("mcrb_colour", "000000", 128, "The colour of the radi
 MCRB.SelectedColour = CreateConVar("mcrb_selected_colour", "FFFFFF", 128, "The colour of radial bind when selected")
 MCRB.Font = CreateConVar("mcrb_font", "Bahnschrift", 128, "The font used in radial binds")
 
-surface.CreateFont("mcrbRadialBinds16", {
-    font = MCRB.Font,
-    size = ScreenScale(16),
-    weight = 0,
-    antialias = true,
-    extended = true, -- Required for non-latin fonts
-})
+function MCRB:CreateFonts()
+    surface.CreateFont("mcrbRadialBinds16", {
+        font = MCRB.Font:GetString(),
+        size = ScreenScale(16),
+        weight = 0,
+        antialias = true,
+        extended = true, -- Required for non-latin fonts
+    })
 
-surface.CreateFont("mcrbRadialBinds16Shadow", {
-    font = MCRB.Font,
-    size = ScreenScale(16),
-    blursize = 5,
-    weight = 0,
-    antialias = true,
-    extended = true, -- Required for non-latin fonts
-})
+    surface.CreateFont("mcrbRadialBinds16Shadow", {
+        font = MCRB.Font:GetString(),
+        size = ScreenScale(16),
+        blursize = 5,
+        weight = 0,
+        antialias = true,
+        extended = true, -- Required for non-latin fonts
+    })
+end
+
+MCRB:CreateFonts()
+
+cvars.AddChangeCallback("mcrb_font", function(convar_name, value_old, value_new)
+    MCRB:CreateFonts()
+end)
 
 local function RadiusSpoke(x, y, angle, rad)
     x = x + (math.cos(angle) * rad)
