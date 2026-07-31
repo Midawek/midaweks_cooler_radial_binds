@@ -167,6 +167,7 @@ function MCRB:OpenMenu()
             MCRB.RegenBindMenu(self)
         end
     end
+
     function MCRB:HelpScreen(text)
         editmenu:Clear()
 
@@ -212,22 +213,23 @@ function MCRB:OpenMenu()
             end
         end
     end
+
     function MCRB:RegenBindMenu()
-            leftbar:Clear()
+        leftbar:Clear()
 
-            local hcat = leftbar:Add("Help")
+        local hcat = leftbar:Add("Help")
 
-            for i, k in pairs(MCRB.helpEntries) do
-                local helpbutton = vgui.Create("DButton", hcat)
-                helpbutton:SetText(i)
-                helpbutton:Dock(TOP)
-                helpbutton:DockMargin(0, 0, 0, 2)
-                helpbutton.DoClick = function()
-                    MCRB.HelpScreen(k)
-                end
+        for i, k in pairs(MCRB.helpEntries) do
+            local helpbutton = vgui.Create("DButton", hcat)
+            helpbutton:SetText(i)
+            helpbutton:Dock(TOP)
+            helpbutton:DockMargin(0, 0, 0, 2)
+            helpbutton.DoClick = function()
+                MCRB.HelpScreen(k)
             end
+        end
 
-    for i1, bindmenu in pairs(MCRB.Radials) do
+        for i1, bindmenu in pairs(MCRB.Radials) do
             local cat = leftbar:Add("Menu " .. tostring(i1))
             for i2, bind in pairs(bindmenu) do
                 local bindbutton = vgui.Create("DButton", cat)
@@ -261,15 +263,16 @@ function MCRB:OpenMenu()
         local mcat = leftbar:Add("Utility")
 
         local bindbutton = vgui.Create("DButton", mcat)
-            bindbutton:SetText("Load From File")
-            bindbutton:Dock(TOP)
-            bindbutton:DockMargin(0, 0, 0, 2)
-            bindbutton.DoClick = function()
-                editmenu:Clear()
-                MCRB:Load()
-                MCRB:RegenBindMenu()
-            end
+        bindbutton:SetText("Load From File")
+        bindbutton:Dock(TOP)
+        bindbutton:DockMargin(0, 0, 0, 2)
+        bindbutton.DoClick = function()
+            editmenu:Clear()
+            MCRB:Load()
+            MCRB:RegenBindMenu()
+        end
     end
+
     MCRB:RegenBindMenu()
 
     MCRB.legacyFilenameOld = "arcticradialbinds.json"
@@ -287,7 +290,7 @@ function MCRB:OpenMenu()
 
     function MCRB:Load()
         local new = false
-        for i, k in pairs({MCRB.legacyFilename, MCRB.legacyFilename2, MCRB.legacyFilename3}) do
+        for i, k in pairs({ MCRB.legacyFilename, MCRB.legacyFilename2, MCRB.legacyFilename3 }) do
             if file.Exists(k, "DATA") then
                 local serial = file.Read(k)
                 MCRB.Radials[i] = util.JSONToTable(serial)
@@ -304,13 +307,11 @@ function MCRB:OpenMenu()
             end
         end
     end
-    
-    if !new then
+
+    if ! new then
         if file.Exists(MCRB.legacyFilenameOld, "DATA") then
             local serial = file.Read(MCRB.legacyFilenameOld)
             MCRB.Radials = util.JSONToTable(serial)
         end
     end
-    end
-
 end
