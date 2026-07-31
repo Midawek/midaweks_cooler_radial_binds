@@ -79,6 +79,14 @@ cvars.AddChangeCallback("mcrb_font", function(convar_name, value_old, value_new)
     MCRB:CreateFonts()
 end)
 
+cvars.AddChangeCallback("mcrb_colour", function(convar_name, value_old, value_new)
+    chat.AddText(Color(0, 255, 0), "[MCRB] Color updated to: " .. value_new)
+end)
+
+cvars.AddChangeCallback("mcrb_selected_colour", function(convar_name, value_old, value_new)
+    chat.AddText(Color(0, 255, 0), "[MCRB] Selected color updated to: " .. value_new)
+end)
+
 local function RadiusSpoke(x, y, angle, rad)
     x = x + (math.cos(angle) * rad)
     y = y + (math.sin(angle) * rad)
