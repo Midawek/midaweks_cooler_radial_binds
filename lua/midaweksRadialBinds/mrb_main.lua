@@ -214,6 +214,12 @@ hook.Add("HUDPaint", "MCRB_HUD", function()
             surface.DrawText(activemenu[i].PrintName)
         end
     end
+
+    local pick_x, pick_y = RadiusSpoke(x, y, math.rad(MCRB.MouseAng), MCRB.MouseRad)
+    local pick_s = ss * 8
+    surface.SetMaterial(MCRB.mat_ring)
+    surface.SetDrawColor(255, 255, 255, a)
+    surface.DrawTexturedRect(pick_x - (pick_s / 2), pick_y - (pick_s / 2), pick_s, pick_s)
 end)
 local function instant()
     local activemenu = MCRB.Radials[MCRB.SelectedMenu]
