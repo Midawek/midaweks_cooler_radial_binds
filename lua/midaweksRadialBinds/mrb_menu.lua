@@ -87,7 +87,7 @@ function MCRB:OpenMenu()
     function MCRB:EditBind(submenu, bind)
         editmenu:Clear()
 
-        local bindtbl = MCRB.Binds[submenu][bind]
+        local bindtbl = MCRB.Radials[submenu][bind]
 
         local edit_label_name = vgui.Create("DLabel", editmenu)
         edit_label_name:Dock(TOP)
@@ -112,15 +112,15 @@ function MCRB:OpenMenu()
         local edit_bindtype = vgui.Create("DComboBox", editmenu)
         edit_bindtype:Dock(TOP)
         edit_bindtype:DockMargin(2, 2, 2, 2)
-        edit_bindtype:SetValue(MCRB.bindToText[bindtbl.BindType or 0])
+        edit_bindtype:SetValue(bindtbl.BindType or MCRB.Binds[1])
 
-        for i, k in pairs(MCRB.bindToText) do
-            edit_bindtype:AddChoice(k, i)
+        for i, k in pairs(MCRB.Binds) do
+            edit_bindtype:AddChoice(k, k)
         end
 
         edit_bindtype.OnSelect = function(self, index, value, data)
             bindtbl.BindType = data
-            MCRB.EditBind(submenu, bind)
+            MCRB:EditBind(submenu, bind)
         end
 
         local edit_label_command = vgui.Create("DLabel", editmenu)
@@ -139,7 +139,7 @@ function MCRB:OpenMenu()
 
         local sel = bindtbl.BindType
 
-        if sel == MCRB.Binds["Burst"] then
+        if sel == "Burst" then
             local edit_label_burst = vgui.Create("DLabel", editmenu)
             edit_label_burst:Dock(TOP)
             edit_label_burst:DockMargin(2, 2, 2, 2)
@@ -161,10 +161,9 @@ function MCRB:OpenMenu()
         edit_remove:SetText("Remove Bind")
         edit_remove:SetTextColor(Color(0, 0, 0))
         edit_remove.DoClick = function()
-            -- ArcticRadialBinds[submenu][bind] = nil
             table.remove(MCRB.Radials[submenu], bind)
             editmenu:Clear()
-            MCRB.RegenBindMenu(self)
+            MCRB:RegenBindMenu()
         end
     end
 
@@ -225,7 +224,7 @@ function MCRB:OpenMenu()
             helpbutton:Dock(TOP)
             helpbutton:DockMargin(0, 0, 0, 2)
             helpbutton.DoClick = function()
-                MCRB.HelpScreen(k)
+                MCRB:HelpScreen(k)
             end
         end
 
@@ -248,15 +247,15 @@ function MCRB:OpenMenu()
             bindbutton.DoClick = function()
                 local newbind = {
                     PrintName = "New Bind",
-                    BindType = MCRB.Binds[0],
+                    BindType = MCRB.Binds[1],
                     Command = "",
                     SegmentFade = 0,
                     BurstLength = 0.1
                 }
 
-                local e = table.insert(MCRB.Radials[i1], newbind)
+                table.insert(MCRB.Radials[i1], newbind)
                 MCRB:RegenBindMenu()
-                MCRB:EditBind(i1, e)
+                MCRB:EditBind(i1, #MCRB.Radials[i1])
             end
         end
 
@@ -283,6 +282,7 @@ function MCRB:OpenMenu()
         local serial = util.TableToJSON(MCRB.Radials[1])
         local serial2 = util.TableToJSON(MCRB.Radials[2])
         local serial3 = util.TableToJSON(MCRB.Radials[3])
+        MCRB.log(self, serial)
         file.Write(MCRB.legacyFilename, serial)
         file.Write(MCRB.legacyFilename2, serial2)
         file.Write(MCRB.legacyFilename3, serial3)
@@ -306,12 +306,12 @@ function MCRB:OpenMenu()
                 new = true
             end
         end
-    end
 
-    if ! new then
-        if file.Exists(MCRB.legacyFilenameOld, "DATA") then
-            local serial = file.Read(MCRB.legacyFilenameOld)
-            MCRB.Radials = util.JSONToTable(serial)
+        if ! new then
+            if file.Exists(MCRB.legacyFilenameOld, "DATA") then
+                local serial = file.Read(MCRB.legacyFilenameOld)
+                MCRB.Radials = util.JSONToTable(serial)
+            end
         end
     end
 end

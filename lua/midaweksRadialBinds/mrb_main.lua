@@ -5,13 +5,13 @@ MCRB = MCRB or {}
 MCRB.Binds = {
     "Command", "Bind", "Toggle", "Instant", "Falling Edge", "Burst", "Dual Edge"
     --[[
-    0 Command - when selected, pressing the bind key will activate this one.
-    1 Bind - when selected, pressing the bind key will use it with + and -
-    2 Toggle - when selected, pressing the bind key will toggle + and -
-    3 Instant - when selected, this command will trigger instantly. It will then act like CMD.
-    4 Falling Edge - command triggers on falling edge
-    5 Burst - command triggers for X seconds
-    6 Dual Edge - command triggers on rising and falling edge
+    1 Command - when selected, pressing the bind key will activate this one.
+    2 Bind - when selected, pressing the bind key will use it with + and -
+    3 Toggle - when selected, pressing the bind key will toggle + and -
+    4 Instant - when selected, this command will trigger instantly. It will then act like CMD.
+    5 Falling Edge - command triggers on falling edge
+    6 Burst - command triggers for X seconds
+    7 Dual Edge - command triggers on rising and falling edge
     ]]
 }
 
@@ -19,19 +19,19 @@ MCRB.Radials = {
     {
         {
             PrintName = "Stims",
-            BindType = MCRB.Binds[1],
+            BindType = MCRB.Binds[2],
             Command = "arc_vm_medshot",
             SegmentFade = 0,
         },
         {
             PrintName = "Night Vision",
-            BindType = MCRB.Binds[0],
+            BindType = MCRB.Binds[1],
             Command = "arc_vm_nvg",
             SegmentFade = 0,
         },
         {
             PrintName = "Armor",
-            BindType = MCRB.Binds[1],
+            BindType = MCRB.Binds[2],
             Command = "armorplate",
             SegmentFade = 0,
         }
@@ -176,7 +176,7 @@ local function instant()
 
     local ply = LocalPlayer()
 
-    if selection.BindType == MCRB.Binds[3] then
+    if selection.BindType == MCRB.Binds[4] then
         ply:ConCommand(selection.Command)
     end
 end
@@ -246,9 +246,9 @@ concommand.Add("+arc_radial_bind", function()
 
     local ply = LocalPlayer()
 
-    if selection.BindType == MCRB.Binds[0] then
+    if selection.BindType == MCRB.Binds[1] then
         ply:ConCommand(selection.Command)
-    elseif selection.BindType == MCRB.Binds[2] then
+    elseif selection.BindType == MCRB.Binds[3] then
         selection.BindToggle = selection.BindToggle or false
 
         if selection.BindToggle then
@@ -258,14 +258,14 @@ concommand.Add("+arc_radial_bind", function()
         end
 
         selection.BindToggle = ! selection.BindToggle
-    elseif selection.BindType == MCRB.Binds[0] then
+    elseif selection.BindType == MCRB.Binds[2] then
         ply:ConCommand("+" .. selection.Command)
-    elseif selection.BindType == MCRB.Binds[6] then
+    elseif selection.BindType == MCRB.Binds[7] then
         ply:ConCommand(selection.Command)
-    elseif selection.BindType == MCRB.Binds[5] then
+    elseif selection.BindType == MCRB.Binds[6] then
         ply:ConCommand("+" .. selection.Command)
 
-        timer.Simple(selection.BurstTime or 1, function()
+        timer.Simple(selection.BurstLength or 0.1, function()
             ply:ConCommand("-" .. selection.Command)
         end)
     end
@@ -279,11 +279,11 @@ concommand.Add("-arc_radial_bind", function()
 
     local ply = LocalPlayer()
 
-    if selection.BindType == MCRB.Binds[1] then
+    if selection.BindType == MCRB.Binds[2] then
         ply:ConCommand("-" .. selection.Command)
-    elseif selection.BindType == MCRB.Binds[4] then
+    elseif selection.BindType == MCRB.Binds[5] then
         ply:ConCommand(selection.Command)
-    elseif selection.BindType == MCRB.Binds[6] then
+    elseif selection.BindType == MCRB.Binds[7] then
         ply:ConCommand(selection.Command)
     end
 end)
