@@ -3,6 +3,7 @@
 local files = {
     "mrb_main.lua",
     "mrb_menu.lua",
+    "mrb_debug.lua"
 }
 
 -- if SERVER then
