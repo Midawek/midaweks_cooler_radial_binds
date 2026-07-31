@@ -19,19 +19,19 @@ MCRB.Radials = {
     {
         {
             PrintName = "Stims",
-            BindType = MCRB.Binds[2],
+            BindType = MCRB.Binds[1],
             Command = "arc_vm_medshot",
             SegmentFade = 0,
         },
         {
             PrintName = "Night Vision",
-            BindType = MCRB.Binds[1],
+            BindType = MCRB.Binds[0],
             Command = "arc_vm_nvg",
             SegmentFade = 0,
         },
         {
             PrintName = "Armor",
-            BindType = MCRB.Binds[2],
+            BindType = MCRB.Binds[1],
             Command = "armorplate",
             SegmentFade = 0,
         }
