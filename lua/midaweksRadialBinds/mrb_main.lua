@@ -52,6 +52,8 @@ MCRB.MouseRad = 0
 
 MCRB.Colour = CreateConVar("mcrb_colour", "000000", 128, "The colour of the radial binds")
 MCRB.SelectedColour = CreateConVar("mcrb_selected_colour", "FFFFFF", 128, "The colour of radial bind when selected")
+MCRB.FontColour = CreateConVar("mcrb_font_colour", "FFFFF", 128, "The colour of the radial binds")
+MCRB.FontSelectedColour = CreateConVar("mcrb_font_selected_colour", "2F2F2F", 128, "The colour of the radial binds")
 MCRB.Font = CreateConVar("mcrb_font", "Bahnschrift", 128, "The font used in radial binds")
 
 function MCRB:CreateFonts()
@@ -86,6 +88,15 @@ end)
 cvars.AddChangeCallback("mcrb_selected_colour", function(convar_name, value_old, value_new)
     chat.AddText(Color(0, 255, 0), "[MCRB] Selected color updated to: " .. value_new)
 end)
+
+cvars.AddChangeCallback("mcrb_font_colour", function(convar_name, value_old, value_new)
+    chat.AddText(Color(0, 255, 0), "[MCRB] Font color updated to: " .. value_new)
+end)
+
+cvars.AddChangeCallback("mcrb_font_selected_colour", function(convar_name, value_old, value_new)
+    chat.AddText(Color(0, 255, 0), "[MCRB] Selected font color updated to: " .. value_new)
+end)
+
 
 local function RadiusSpoke(x, y, angle, rad)
     x = x + (math.cos(angle) * rad)
@@ -132,8 +143,8 @@ hook.Add("HUDPaint", "MCRB_HUD", function()
     local col_base = MCRB:HexToColor(MCRB.Colour:GetString())
     local col_selected = MCRB:HexToColor(MCRB.SelectedColour:GetString())
 
-    local col_fg = Color(col_base.r, col_base.g, col_base.b, a)
-    local col_fg_h = Color(col_selected.r, col_selected.g, col_selected.b, a)
+    local col_fg = MCRB:HexToColor(MCRB.FontColour:GetString())
+    local col_fg_h = MCRB:HexToColor(MCRB.FontSelectedColour:GetString())
 
     local segments = table.Count(activemenu)
 
