@@ -180,10 +180,11 @@ hook.Add("HUDPaint", "MCRB_HUD", function()
 
             local tb_w = inf_w + (ss * 4)
 
+
             if selected then
-                surface.SetDrawColor(255, 255, 255, a * 0.5)
+                surface.SetDrawColor(col_selected.r, col_selected.g, col_selected.b, a * 0.5)
             else
-                surface.SetDrawColor(0, 0, 0, a * 0.8)
+                surface.SetDrawColor(col_base.r, col_base.g, col_base.b, a * 0.8)
             end
             surface.DrawRect(inf_x - (tb_w / 2), inf_y - (ss * 0.5), tb_w, inf_h + (ss * 1))
 
