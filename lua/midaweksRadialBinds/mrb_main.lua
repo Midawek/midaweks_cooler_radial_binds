@@ -79,6 +79,14 @@ cvars.AddChangeCallback("mcrb_font", function(convar_name, value_old, value_new)
     MCRB:CreateFonts()
 end)
 
+cvars.AddChangeCallback("mcrb_colour", function(convar_name, value_old, value_new)
+    chat.AddText(Color(0, 255, 0), "[MCRB] Color updated to: " .. value_new)
+end)
+
+cvars.AddChangeCallback("mcrb_selected_colour", function(convar_name, value_old, value_new)
+    chat.AddText(Color(0, 255, 0), "[MCRB] Selected color updated to: " .. value_new)
+end)
+
 local function RadiusSpoke(x, y, angle, rad)
     x = x + (math.cos(angle) * rad)
     y = y + (math.sin(angle) * rad)
@@ -88,6 +96,21 @@ end
 MCRB.mat_ring = Material("sgm/playercircle")
 MCRB.segmentfadetime = 0.25
 MCRB.fadetime = 0.1
+
+function MCRB:HexToColor(hex)
+    hex = hex:gsub("#", "")
+
+    if string.len(hex) == 6 then
+        return Color(
+            tonumber("0x" .. string.sub(hex, 1, 2)),
+            tonumber("0x" .. string.sub(hex, 3, 4)),
+            tonumber("0x" .. string.sub(hex, 5, 6)),
+            255
+        )
+    end
+
+    return Color(255, 255, 255, 255)
+end
 
 hook.Add("HUDPaint", "MCRB_HUD", function()
     local activemenu = MCRB.Radials[MCRB.SelectedMenu]
@@ -106,8 +129,11 @@ hook.Add("HUDPaint", "MCRB_HUD", function()
 
     local ss = ScreenScale(1)
 
-    local col_fg = Color(255, 255, 255, a)
-    local col_fg_h = Color(25, 25, 25, a)
+    local col_base = MCRB:HexToColor(MCRB.Colour:GetString())
+    local col_selected = MCRB:HexToColor(MCRB.SelectedColour:GetString())
+
+    local col_fg = Color(col_base.r, col_base.g, col_base.b, a)
+    local col_fg_h = Color(col_selected.r, col_selected.g, col_selected.b, a)
 
     local segments = table.Count(activemenu)
 
