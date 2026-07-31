@@ -159,7 +159,7 @@ hook.Add("HUDPaint", "MCRB_HUD", function()
             else
                 surface.SetTextColor(col_fg)
             end
-            surface.SetFont("arc_radial_binds_16")
+            surface.SetFont("mcrbRadialBinds16")
             surface.SetTextPos(inf_x - (inf_w / 2), inf_y)
             surface.DrawText(activemenu[i].PrintName)
         end
@@ -269,7 +269,7 @@ concommand.Add("+arc_radial_bind", function()
 end)
 
 concommand.Add("-arc_radial_bind", function()
-    local activemenu = ArcticRadialBinds[MCRB.SelectedMenu]
+    local activemenu = MCRB.Radials[MCRB.SelectedMenu]
     local selection = activemenu[MCRB.Selection]
 
     if ! selection then return end
@@ -286,6 +286,6 @@ concommand.Add("-arc_radial_bind", function()
 end)
 
 concommand.Add("mcrb_customize", function()
-    print("[MCRB] Currently customizing isn't ")
+    print("[MCRB] Currently customizing isn't implemented, check back later!")
     --MCRB:OpenMenu() -- currently doesn't exist
 end)
