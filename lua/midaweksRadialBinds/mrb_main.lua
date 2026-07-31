@@ -289,6 +289,5 @@ concommand.Add("-arc_radial_bind", function()
 end)
 
 concommand.Add("mcrb_customize", function()
-    MCRB:log("Currently customizing isn't implemented, check back later!")
-    --MCRB:OpenMenu() -- currently doesn't exist
+    MCRB:OpenMenu()
 end)

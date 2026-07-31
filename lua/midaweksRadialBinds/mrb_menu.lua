@@ -2,7 +2,7 @@
 
 if not CLIENT then return end
 MCRB = MCRB or {}
-
+MCRB.bindToText = MCRB.bindToText or {}
 MCRB.helpEntries = {
     ["Using Binds"] = [[
         Using Binds:
@@ -71,7 +71,7 @@ function MCRB:OpenMenu()
     main:SetTitle("Arctic's Radial Binds")
     main:MakePopup()
     main.OnRemove = function()
-        MCRB.Save()
+        MCRB:Save()
     end
 
     local leftbar = vgui.Create("DCategoryList", main)
@@ -112,9 +112,9 @@ function MCRB:OpenMenu()
         local edit_bindtype = vgui.Create("DComboBox", editmenu)
         edit_bindtype:Dock(TOP)
         edit_bindtype:DockMargin(2, 2, 2, 2)
-        edit_bindtype:SetValue(MCRB.BIND_To_Text[bindtbl.BindType or 0])
+        edit_bindtype:SetValue(MCRB.bindToText[bindtbl.BindType or 0])
 
-        for i, k in pairs(MCRB.BIND_To_Text) do
+        for i, k in pairs(MCRB.bindToText) do
             edit_bindtype:AddChoice(k, i)
         end
 
@@ -237,7 +237,7 @@ function MCRB:OpenMenu()
                 bindbutton:Dock(TOP)
                 bindbutton:DockMargin(0, 0, 0, 2)
                 bindbutton.DoClick = function()
-                    ArcticRadialBinds_EditBind(i1, i2)
+                    MCRB:EditBind(i1, i2)
                 end
             end
 
@@ -279,7 +279,7 @@ function MCRB:OpenMenu()
     MCRB.legacyFilename = "arcticradialbinds1.json"
     MCRB.legacyFilename2 = "arcticradialbinds2.json"
     MCRB.legacyFilename3 = "arcticradialbinds3.json"
-    function ArcticRadialBinds_Save()
+    function MCRB:Save()
         local serial = util.TableToJSON(MCRB.Radials[1])
         local serial2 = util.TableToJSON(MCRB.Radials[2])
         local serial3 = util.TableToJSON(MCRB.Radials[3])
