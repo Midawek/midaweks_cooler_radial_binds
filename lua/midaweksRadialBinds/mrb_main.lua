@@ -1,7 +1,6 @@
 -- MIDAWEK'S COOLER RADIAL BINDS
 if SERVER then return end
 MCRB = MCRB or {}
-MCRB.Font = "Bahnschrift"
 
 MCRB.Binds = {
     "Command", "Bind", "Toggle", "Instant", "Falling Edge", "Burst", "Dual Edge"
@@ -49,6 +48,10 @@ MCRB.Fade = 0
 
 MCRB.MouseAng = 0
 MCRB.MouseRad = 0
+
+MCRB.Colour = CreateConVar("mcrb_colour", "000000", 128, "The colour of the radial binds")
+MCRB.SelectedColour = CreateConVar("mcrb_selected_colour", "FFFFFF", 128, "The colour of radial bind when selected")
+MCRB.Font = CreateConVar("mcrb_font", "Bahnschrift", 128, "The font used in radial binds")
 
 surface.CreateFont("mcrbRadialBinds16", {
     font = MCRB.Font,
@@ -207,7 +210,7 @@ concommand.Add("-arc_radial_menu_3", function()
     instant()
 end)
 
-hook.Add("InputMouseApply", "MCRB.Mouse", function(cmd, x, y, ang)
+hook.Add("InputMouseApply", "MCRB_Mouse", function(cmd, x, y, ang)
     if ! MCRB.Open then return end
 
     if math.abs(x) + math.abs(y) <= 0 then return end
@@ -234,7 +237,7 @@ hook.Add("InputMouseApply", "MCRB.Mouse", function(cmd, x, y, ang)
 
     return true
 end)
-
+-- Commands for actual binds
 concommand.Add("+arc_radial_bind", function()
     local activemenu = MCRB.Radials[MCRB.SelectedMenu]
     local selection = activemenu[MCRB.Selection]
