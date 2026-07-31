@@ -49,6 +49,7 @@ MCRB.Fade = 0
 MCRB.MouseAng = 0
 MCRB.MouseRad = 0
 
+
 MCRB.Colour = CreateConVar("mcrb_colour", "000000", 128, "The colour of the radial binds")
 MCRB.SelectedColour = CreateConVar("mcrb_selected_colour", "FFFFFF", 128, "The colour of radial bind when selected")
 MCRB.Font = CreateConVar("mcrb_font", "Bahnschrift", 128, "The font used in radial binds")
@@ -237,6 +238,24 @@ hook.Add("InputMouseApply", "MCRB_Mouse", function(cmd, x, y, ang)
 
     return true
 end)
+
+hook.Add("PlayerBindPress", "MCRB_Scroll", function(ply, bind, pressed)
+    if ! MCRB.Open then return end
+
+    if bind == "invnext" then
+        MCRB.SelectedMenu = MCRB.SelectedMenu + 1
+        if MCRB.SelectedMenu > 3 then
+            MCRB.SelectedMenu = 1
+        end
+        return true
+    elseif bind == "invprev" then
+        MCRB.SelectedMenu = MCRB.SelectedMenu - 1
+        if MCRB.SelectedMenu < 1 then
+            MCRB.SelectedMenu = 3
+        end
+        return true
+    end
+end)
 -- Commands for actual binds
 concommand.Add("+arc_radial_bind", function()
     local activemenu = MCRB.Radials[MCRB.SelectedMenu]
@@ -290,4 +309,18 @@ end)
 
 concommand.Add("mcrb_customize", function()
     MCRB:OpenMenu()
+end)
+
+concommand.Add("mcrb_import_data", function()
+    MCRB:Load()
+    chat.AddText(Color(0, 255, 0), "[MCRB] Data loaded from file.")
+end)
+
+concommand.Add("mcrb_import_legacy_data", function()
+    if MCRB:LoadLegacy() then
+        MCRB:Save()
+        chat.AddText(Color(0, 255, 0), "[MCRB] Legacy files imported and converted to new format!")
+    else
+        chat.AddText(Color(255, 0, 0), "[MCRB] No legacy files found to import.")
+    end
 end)

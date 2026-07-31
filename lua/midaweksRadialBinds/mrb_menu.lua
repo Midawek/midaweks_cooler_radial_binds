@@ -260,31 +260,6 @@ function MCRB:OpenMenu()
         end
 
         local mcat = leftbar:Add("Utility")
-
-        local bindbutton = vgui.Create("DButton", mcat)
-        bindbutton:SetText("Load From File")
-        bindbutton:Dock(TOP)
-        bindbutton:DockMargin(0, 0, 0, 2)
-        bindbutton.DoClick = function()
-            editmenu:Clear()
-            MCRB:Load()
-            MCRB:RegenBindMenu()
-        end
-
-        local legacybutton = vgui.Create("DButton", mcat)
-        legacybutton:SetText("Import Legacy Files")
-        legacybutton:Dock(TOP)
-        legacybutton:DockMargin(0, 0, 0, 2)
-        legacybutton.DoClick = function()
-            editmenu:Clear()
-            if MCRB:LoadLegacy() then
-                MCRB:Save()
-                MCRB:RegenBindMenu()
-                chat.AddText(Color(0, 255, 0), "[MCRB] Legacy files imported and converted to new format!")
-            else
-                chat.AddText(Color(255, 0, 0), "[MCRB] No legacy files found to import.")
-            end
-        end
     end
 
     MCRB:RegenBindMenu()
